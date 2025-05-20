@@ -29,7 +29,7 @@ public class Server {
             String method = requestParts[0];
             String path = requestParts[1];
 
-            // Read and skip headers
+        
             String line;
             int contentLength = 0;
             while (!(line = fromClient.readLine()).isEmpty()) {
@@ -39,32 +39,32 @@ public class Server {
             }
 
             if (method.equals("GET")) {
-                // Serve static HTML
-                File file = new File("index.html"); //Looks for a file named index.html.
+            
+                File file = new File("index.html"); 
                 if (file.exists()) {
                     BufferedReader fileReader = new BufferedReader(new FileReader(file));
                     toClient.println("HTTP/1.1 200 OK");
                     toClient.println("Content-Type: text/html");
-                    toClient.println(); //Sends HTTP response headers followed by an empty line (required by the protocol).
+                    toClient.println(); 
                     String htmlLine;
                     while ((htmlLine = fileReader.readLine()) != null) {
                         toClient.println(htmlLine);
                     }
                     fileReader.close();
                 } else {
-                    toClient.println("HTTP/1.1 404 Not Found"); //if not found sends an error response. 
+                    toClient.println("HTTP/1.1 404 Not Found"); 
                     toClient.println("Content-Type: text/plain");
                     toClient.println();
                     toClient.println("File not found");
                 }
             } else if (method.equals("POST")) {
-                // Read the POST body
+                
                 char[] body = new char[contentLength];
                 fromClient.read(body);
                 String postData = new String(body);
                 System.out.println("POST data: " + postData);
 
-                // Respond
+                
                 toClient.println("HTTP/1.1 200 OK");
                 toClient.println("Content-Type: text/plain");
                 toClient.println();
