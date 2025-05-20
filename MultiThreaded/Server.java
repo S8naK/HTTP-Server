@@ -34,7 +34,7 @@ public class Server {
                 BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 PrintWriter out = new PrintWriter(socket.getOutputStream(), true)
             ) {
-                // 1. Read the request line
+                
                 String requestLine = in.readLine();
                 if (requestLine == null || requestLine.isEmpty()) {
                     socket.close();
@@ -45,7 +45,7 @@ public class Server {
                 String method = parts[0];
                 String path = parts[1];
 
-                // 2. Read and skip headers, capture Content-Length if POST
+                
                 String line;
                 int contentLength = 0;
                 while (!(line = in.readLine()).isEmpty()) {
@@ -54,7 +54,7 @@ public class Server {
                     }
                 }
 
-                // 3. Handle GET
+               
                 if ("GET".equals(method)) {
                     File file = new File("index.html");
                     if (file.exists()) {
@@ -74,7 +74,7 @@ public class Server {
                         out.println("File not found");
                     }
 
-                // 4. Handle POST
+                
                 } else if ("POST".equals(method)) {
                     char[] body = new char[contentLength];
                     in.read(body);
@@ -86,7 +86,7 @@ public class Server {
                     out.println();
                     out.println("Data received: " + postData);
 
-                // 5. Other methods
+                
                 } else {
                     out.println("HTTP/1.1 405 Method Not Allowed");
                     out.println("Content-Type: text/plain");
